@@ -1,0 +1,14 @@
+{% autoescape off %}
+Hello Admin,
+
+You have received a message from our user {{user_name}}. Please look over the issue as soon as possible.
+
+User Email Address: {{email}}
+Subject: {{email_subject}}
+Message: {{email_message}}
+
+
+Sincerely,
+The BroadCast Team
+
+{% endautoescape %}

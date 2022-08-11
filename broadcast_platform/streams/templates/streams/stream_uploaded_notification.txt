@@ -1,0 +1,9 @@
+{% autoescape off %}
+Hello,
+
+We have uploaded a stream to the channel you have subscribed. Enjoy the Stream :) :) :) :)
+
+Sincerely,
+The BroadCast Team
+
+{% endautoescape %}

@@ -1,0 +1,50 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Subscritpions-List{% endblock %}
+{% block pagetitle %}Subscriptions{% endblock %}
+{% block breadcrumb %}
+<a href="#">Subscribed</a>/ Channels-Users
+{% endblock %}
+
+{% block body %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Channels</h5>
+
+        <!-- Table with stripped rows -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Channel</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td style="text-transform: capitalize">{{user}}</td>
+                    <!-- {% for usr_sub in usr_subs %}
+                    <td style="text-transform: capitalize">{{usr_sub.channel.channel_name}}</td>
+                    {% endfor %} -->
+
+                    <td style="text-transform: capitalize">
+                        {% for usr_sub in user.usersubscriptions_set.all %}
+                        <span class="badge bg-secondary">{{usr_sub.channel.channel_name}}</span>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

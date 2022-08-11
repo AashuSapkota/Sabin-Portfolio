@@ -1,0 +1,124 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Users-List{% endblock %}
+{% block pagetitle %}Profiles{% endblock %}
+{% block breadcrumb %}
+    <a href="#">Users</a> / List
+{% endblock %}
+
+{% block body %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Users</h5>
+
+        <!-- Table with stripped rows -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Contact Number</th>
+                    <th scope="col">Email Address</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td style="text-transform: capitalize">{{user.user_fullname}}</td>
+                    <td style="text-transform: capitalize">{{user.user_username}}</td>
+                    <td style="text-transform: capitalize">{{user.user_address}}</td>
+                    <td>{{user.user_contact_number}}</td>
+                    <td>{{user.user_email_address}}</td>
+                    <td>
+                        <a href="{% url 'users:user_update' user.pk %}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-user-edit"></i>Edit
+                        </a>
+                        <!-- <a href="" class="btn btn-sm btn-danger deleteUser" data-bs-toggle="modal" 
+                    id={{user.pk}}>
+                        <i class="fas fa-trash-alt"></i>Delete
+                    </a> -->
+                        <a href="{% url 'users:user_delete' user.pk %}" class="btn btn-sm btn-danger deleteUser"
+                            data-bs-toggle="modal" data-bs-target="#basicModal" id={{user.pk}}>
+                            <i class="fas fa-trash-alt"></i>Delete
+                        </a>
+                        <form action="{% url 'users:block_user' pk=user.pk %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-sm btn-danger" name="" id="" value="Block">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+
+    </div>
+</div>
+
+<div class="modal fade" id="basicModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if user_id is not None %}
+                <p>Are you sure you want to delete user 
+                    <strong style="text-transform: capitalize">"{{user_name}}"</strong>
+                </p>
+                <a class="btn btn-danger" href="{% url 'users:user_delete' user_id %}">
+                    Delete
+                </a>
+                <a class="btn btn-primary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrftoken = getCookie('csrftoken');
+
+        $(document).ready(function () {
+            $('.deleteUser').click(function () {
+                var id = this.id
+                $.ajax({
+                    url: '',
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': csrftoken,
+                    },
+                    success: function (data) {
+                        $('#basicModal .modal-dialog').html($('#basicModal .modal-dialog', data));
+                        $('#basicModal').modal('show');
+                    },
+                })
+            })
+        })
+    </script>
+
+    {% endblock %}

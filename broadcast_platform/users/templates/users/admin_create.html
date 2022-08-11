@@ -1,0 +1,83 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Admin-Create{% endblock %}
+{% block pagetitle %}Profiles{% endblock %}
+{% block breadcrumb %}
+    <a href="{% url 'users:admin_list' %}">Admin</a> / Create
+{% endblock %}
+
+{% block body %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Create Admin</h5>
+        <form method="post" action="{{self}}" class="row g-3 needs-validation" novalidate>
+            {% csrf_token %}
+
+            <div class="row mb-3">
+              <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Full Name" name="full_name" required>
+                <div class="invalid-feedback">Please Enter Full Name.</div>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <label for="username" class="col-md-4 col-lg-3 col-form-label">Username</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Username" name="username" required>
+                <div class="invalid-feedback">Please Enter UserName.</div>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <label for="email_address" class="col-md-4 col-lg-3 col-form-label">Email</label>
+              <div class="col-md-6">
+                <input type="email" class="form-control" placeholder="Email" name="email_address" required>
+                <div class="invalid-feedback">Please Enter Valid Email.</div>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <label for="contact_number" class="col-md-4 col-lg-3 col-form-label">Contact Number</label>
+              <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Contact Number" name="contact_number" required>
+                  <div class="invalid-feedback">Please Enter Contact Number.</div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="user_country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+              <div class="col-md-6">
+                <select class="form-select" aria-label="Default select example" name="user_country" required>
+                  <option selected>Select Country</option>
+                  {% for country in countries %}
+                  <option value="{{country.pk}}">{{country.country_name}}</option>
+                  {% endfor %}
+                </select>
+                <div class="invalid-feedback">Please Select Country.</div>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Address" name="address" required>
+                <div class="invalid-feedback">Please Enter Address.</div>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+                <label for="password" class="col-md-4 col-lg-3 col-form-label">Password</label>
+                <div class="col-md-6">
+                  <input type="password" class="form-control" placeholder="Password" name="password" required>
+                  <div class="invalid-feedback">Please Enter Valid Password.</div>
+                </div>
+              </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Save</button>
+              <a href="{% url 'users:admin_list' %}" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

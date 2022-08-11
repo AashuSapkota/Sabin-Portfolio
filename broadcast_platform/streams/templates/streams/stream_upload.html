@@ -1,0 +1,64 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Stream-Upload{% endblock %}
+{% block pagetitle %}Streams{% endblock %}
+{% block breadcrumb %}
+<a href="{% url 'streams:stream_list' %}">Stream</a>/ Upload{% endblock %}
+
+{% block body %}
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Upload Stream</h5>
+    <form method="post" action="{{self}}" class="row g-3 needs-validation" novalidate enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="row mb-3">
+        <label for="stream_name" class="col-md-4 col-lg-3 col-form-label">Stream Name</label>
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="Stream Name" name="stream_name" required>
+          <div class="invalid-feedback">Please Enter Stream Name.</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label for="stream_channel" class="col-md-4 col-lg-3 col-form-label">Channel</label>
+        <div class="col-md-6">
+          <select class="form-select" aria-label="Default select example" name="stream_channel" required>
+            <option selected>Select Channel</option>
+            {% for channel in channels %}
+            <option value="{{channel.pk}}">{{channel.channel_name}}</option>
+            {% endfor %}
+          </select>
+          <div class="invalid-feedback">Please Select Channel Name.</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label for="stream_live" class="col-md-4 col-lg-3 col-form-label">Is Live</label>
+        <div class="col-md-6">
+          <select class="form-select" aria-label="Default select example" name="stream_live" required>
+            <option selected>Select Type</option>
+            <option value="True">True</option>
+            <option value="False">False</option>
+          </select>
+          <div class="invalid-feedback">Please Select Channel Name.</div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <label for="stream_file" class="col-md-4 col-lg-3 col-form-label">Stream File</label>
+        <div class="col-md-6">
+          <input type="file" class="form-control" placeholder="Stream File" name="stream_file" required>
+          <div class="invalid-feedback">Please Select Video File.</div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a href="{% url 'streams:stream_list' %}" class="btn btn-danger">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

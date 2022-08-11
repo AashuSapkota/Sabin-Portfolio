@@ -1,0 +1,203 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Users-Profile{% endblock %}
+{% block pagetitle %}Users{% endblock %}
+{% block breadcrumb %}Users / Profile{% endblock %}
+
+{% block body %}
+<section class="section profile">
+    <div class="row">
+        <div class="col-xl-4">
+
+            <div class="card">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                    <img src="{% static 'dashboard/img/profile.png' %}" alt="Profile" class="rounded-circle">
+                    <h2 style="text-transform: capitalize">{{ user.user_fullname }}</h2>
+                    <h3 style="text-transform: capitalize">{{ user.user_username }}</h3>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xl-8">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    <!-- Bordered Tabs -->
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab"
+                                data-bs-target="#profile-overview">Overview</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit
+                                Profile</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab"
+                                data-bs-target="#profile-change-password">Change Password</button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content pt-2">
+
+                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                            <h5 class="card-title">Profile Details</h5>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                                <div class="col-lg-9 col-md-8" style="text-transform: capitalize">{{user.user_fullname}}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Username</div>
+                                <div class="col-lg-9 col-md-8" style="text-transform: capitalize">{{user.user_username}}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Country</div>
+                                <div class="col-lg-9 col-md-8" style="text-transform: capitalize">{{user.user_country.country_name}}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Address</div>
+                                <div class="col-lg-9 col-md-8" style="text-transform: capitalize">{{user.user_address}}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Contact Number</div>
+                                <div class="col-lg-9 col-md-8">{{ user.user_contact_number }}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Email</div>
+                                <div class="col-lg-9 col-md-8">{{ user.user_email_address }}</div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                            <!-- Profile Edit Form -->
+                            <form method="POST" , action="{% url 'users:user_update' pk=user.pk %}"
+                                class="needs-validation" novalidate>
+                                {% csrf_token %}
+                                <div class="row mb-3">
+                                    <label for="full_name" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="full_name" type="text" class="form-control" id="full_name"
+                                            value={{user.user_fullname}} required>
+                                        <div class="invalid-feedback">Please Enter Full Name.</div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row mb-3">
+                                    <label for="user_name" class="col-md-4 col-lg-3 col-form-label">Username</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="username" type="text" class="form-control" id="username"
+                                            value={{user.user_username}} required>
+                                        <div class="invalid-feedback">Please Enter UserName.</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="email_address" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="email_address" type="email" class="form-control" id="email_address"
+                                            value={{user.user_email_address}} required>
+                                        <div class="invalid-feedback">Please Enter Email Address.</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="user_country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+                                    <div class="col-md-8 col-lg-9">
+                                      <select class="form-select" aria-label="Default select example" class='form-control' name="user_country" required>
+                                        <option selected value="{{user.user_country.pk}}">{{user.user_country.country_name}}</option>
+                                        <option>Select Country</option>
+                                        {% for country in countries %}
+                                        <option value="{{country.pk}}">{{country.country_name}}</option>
+                                        {% endfor %}
+                                      </select>
+                                      <div class="invalid-feedback">Please Select Country.</div>
+                                    </div>
+                                  </div>
+
+                                <div class="row mb-3">
+                                    <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="address" type="text" class="form-control" id="address"
+                                            value={{user.user_address}} required>
+                                        <div class="invalid-feedback">Please Enter Address.</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="contact_number" class="col-md-4 col-lg-3 col-form-label">Contact
+                                        Number</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="contact_number" type="text" class="form-control"
+                                            id="contact_number" value={{user.user_contact_number}} required>
+                                        <div class="invalid-feedback">Please Enter Contact Number.</div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form><!-- End Profile Edit Form -->
+
+                        </div>
+
+                        <div class="tab-pane fade pt-3" id="profile-change-password">
+                            <!-- Change Password Form -->
+                            <form method="POST" , action="{% url 'users:user_change_password' pk=user.pk %}"
+                                class="needs-validation" novalidate>
+                                {% csrf_token %}
+                                <div class="row mb-3">
+                                    <label for="old_password" class="col-md-4 col-lg-3 col-form-label">Current
+                                        Password</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="old_password" type="password" class="form-control"
+                                            id="old_password" required>
+                                            <div class="invalid-feedback">Please Enter Current Password.</div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="new_password" class="col-md-4 col-lg-3 col-form-label">New
+                                        Password</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="new_password" type="password" class="form-control"
+                                            id="new_password" required>
+                                            <div class="invalid-feedback">Please Enter New Password.</div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Change Password</button>
+                                </div>
+                            </form><!-- End Change Password Form -->
+
+                        </div>
+
+                    </div><!-- End Bordered Tabs -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

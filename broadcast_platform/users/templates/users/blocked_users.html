@@ -1,0 +1,50 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Users-List{% endblock %}
+{% block pagetitle %}Profiles{% endblock %}
+{% block breadcrumb %}
+    <a href="#">Users</a> / Blocked Users
+{% endblock %}
+
+{% block body %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Users</h5>
+
+        <!-- Table with stripped rows -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Contact Number</th>
+                    <th scope="col">Email Address</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td style="text-transform: capitalize">{{user.user_fullname}}</td>
+                    <td style="text-transform: capitalize">{{user.user_username}}</td>
+                    <td style="text-transform: capitalize">{{user.user_address}}</td>
+                    <td>{{user.user_contact_number}}</td>
+                    <td>{{user.user_email_address}}</td>
+                    <td>
+                        <form action="{% url 'users:unblock_user' pk=user.pk %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-sm btn-danger" name="" id="" value="UnBlock">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+    {% endblock %}

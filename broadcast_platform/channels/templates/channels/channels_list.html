@@ -1,0 +1,146 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Channels-List{% endblock %}
+{% block pagetitle %}Channels{% endblock %}
+{% block breadcrumb %}
+    <a href="#">Channels</a>/ List
+ {% endblock %}
+
+{% block body %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Channels</h5>
+
+        <!-- Table with stripped rows -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for channel in channels %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td style="text-transform: capitalize">{{channel.channel_name}}</td>
+                    <td style="text-transform: capitalize">{{channel.channel_description}}</td>
+                    <td>
+                        {% if request.user.is_admin == True %}
+                            <a href="{% url 'channels:channel_update' channel.pk %}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-user-edit"></i>Edit
+                            </a>
+
+                            <a href="{% url 'channels:channel_delete' channel.pk %}" class="btn btn-sm btn-danger deleteUser"
+                                data-bs-toggle="modal" data-bs-target="#basicModal" id={{channel.pk}}>
+                                <i class="fas fa-trash-alt"></i>Delete
+                            </a>
+
+                        {% elif request.user.is_admin == False %}
+                            <a href="" class="btn btn-sm btn-primary subscribeChannel" id={{channel.pk}}>
+                                <i class="fas fa-universal-access"></i>  Subscribe
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+
+    </div>
+
+    
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="basicModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Channel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if channel_id is not None %}
+                <p>Are you sure you want to delete Channel 
+                    <strong style="text-transform: capitalize">"{{channel_name}}"</strong>
+                </p>
+                <a class="btn btn-danger" href="{% url 'channels:channel_delete' channel_id %}">
+                    Delete
+                </a>
+                <a class="btn btn-primary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrftoken = getCookie('csrftoken');
+
+        $(document).ready(function () {
+            $('.deleteUser').click(function () {
+                var id = this.id
+                $.ajax({
+                    url: '',
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': csrftoken,
+                    },
+                    success: function (data) {
+                        $('#basicModal .modal-dialog').html($('#basicModal .modal-dialog', data));
+                        $('#basicModal').modal('show');
+                    },
+                })
+            });
+
+            
+        
+            $('.subscribeChannel').click(function () {
+                var id = this.id
+                var url = "{% url 'subscriptions:channel_subscribe' %}"
+                console.log(id)
+                console.log(url)
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': csrftoken,
+                    },
+                    success: function (data) {
+                        console.log('form posted')
+                    },
+                });
+            });
+        
+        })
+    </script>
+
+    {% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Streaming Now{% endblock %}
+{% block pagetitle %}Streaming Now{% endblock %}
+{% block breadcrumb %}
+<a href="#">Streams</a> / Now Streaming
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="card" style="width: 100%;">
+        <div class="card-body">
+          <h5 class="card-title">{{stream.stream_name}}
+            {% if stream.is_live == True %}
+            <strong style="color: red;">LIVE</strong>
+            {% endif %}
+          </h5>
+          <div>
+              <video width="100%" height="400" controls>
+                <source src="{{ stream.stream_file.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <form method="post" action="{% url 'streams:create_comment' %}" class="row g-3 needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="row mb-6">
+              <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Add comment" id='addComment' name="comment"
+                  required>
+                <div class="invalid-feedback">Please Add Comment.</div>
+                <input type="text" value="{{stream.pk}}" name="stream_id" hidden>
+              </div>
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col" style="padding-left: 10px;">
+                    <input type="submit" class="btn btn-primary" value="Add Comment">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-4">
+          <form action="{% url 'streams:cheers_stream' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-warning" value="Cheers" name="cheersButton"
+              style="padding-left:2rem; padding-right: 2rem; margin-top: -25px;">
+            <input type="text" value="{{stream.pk}}" name="stream_id" hidden>
+          </form>
+          <div class="col-4">
+            <input type="button" name="" id="" class="btn btn-warning" value="Add Feedback" data-bs-toggle="modal"
+              data-bs-target="#basicModal">
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div>
+
+
+      <div class="container">
+        <div class="row">
+          <div><strong>View Comments</strong></div>
+          {% for comment in comments %}
+          <div class="col">
+            <div class="comment mt-4 text-justify float-left">
+              <h4 style="text-transform: capitalize"> <img src="{% static 'dashboard/img/profile.png' %}" alt=""
+                  class="rounded-circle" width="40" height="40">{{comment.user_id}}</h4> <span>{{comment.date}}</span>
+              <br>
+              <p>{{comment.comment}}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="basicModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Feedback</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'streams:create_feedback' pk=stream.pk %}" class="row g-3 needs-validation" novalidate
+          method="post">
+          {% csrf_token %}
+          <textarea name="feedback" id="" cols="20" rows="10" class="form-control"></textarea>
+          <!-- <input hidden value="{{stream.pk}}">  -->
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

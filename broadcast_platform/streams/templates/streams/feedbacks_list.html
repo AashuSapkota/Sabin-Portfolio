@@ -1,0 +1,46 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Streams{% endblock %}
+{% block pagetitle %}Feedbacks{% endblock %}
+{% block breadcrumb %}
+<a href="#">Streams</a> / Feedbacks
+{% endblock %}
+
+{% block body %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Feedbacks</h5>
+
+        <!-- Table with stripped rows -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Stream</th>
+                    <th scope="col">Feedback</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for feedback in feedbacks %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td style="text-transform: capitalize">{{feedback.user_id}}</td>
+                    <td style="text-transform: capitalize">{{feedback.stream_id}}</td>
+                    <td style="text-transform: capitalize;">{{feedback.feedback}} </td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Channels-List{% endblock %}
+{% block pagetitle %}Channels{% endblock %}
+{% block breadcrumb %}
+    <a href="#">Channels</a>/ Subscribed Channels
+ {% endblock %}
+
+{% block body %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Subscribed Channels</h5>
+
+        <!-- Table with stripped rows -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for channel in channels %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td style="text-transform: capitalize">{{channel.channel_name}}</td>
+                    <td style="text-transform: capitalize">{{channel.channel_description}}</td>
+                    <td>
+                        <a href="" class="btn btn-sm btn-danger subscribeChannel" id={{channel.pk}}>
+                            <i class="fas fa-times"></i>  Un-Subscribe
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    
+</div>
+
+
+
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrftoken = getCookie('csrftoken');
+
+        $(document).ready(function () {
+        
+            $('.subscribeChannel').click(function () {
+                // alert('hello')
+                var id = this.id
+                var url = "{% url 'subscriptions:channel_unsubscribe' %}"
+                console.log(id)
+                console.log(url)
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        'id': id,
+                        'csrfmiddlewaretoken': csrftoken,
+                    },
+                    success: function (data) {
+                        console.log('form posted')
+                    },
+                });
+            });
+        
+        })
+    </script>
+
+    {% endblock %}
