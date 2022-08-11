@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Attendance</title>
+    <style>
+        .btn-sm{
+            padding: 0.5rem 1rem;
+            margin-top: 20px;
+            padding-top: 5px;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            border-radius: 0.3rem;
+        }
+    </style>
+
+<script src="{% static 'employee\js\webcam.js' %}"></script>
+
+</head>
+<body>
+    <div>
+    <div id="my_camera" style="width:320px; height:240px; border-style: solid; border-color: black;"></div>
+    <div id="my_result"></div>
+    <input type="submit" id="capture_button" name="capture_button" value="Capture"
+                       class="btn btn-success btn-sm"
+                       data-toggle="modal" onclick="take_snapshot()">
+
+    <form id ="myform" enctype='multipart/form-data' action="{{self}}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="mydata" id = "mydata" />
+         <!-- <input type="file" name="mydata" id = "mydata" style="display: none;" /> -->
+    </form>
+</div>
+
+    <footer>
+        <script>
+            Webcam.attach('#my_camera');
+            
+            function take_snapshot() {
+                Webcam.snap( function(data_uri) {
+                    document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
+        
+                    var raw_image_data = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
+                    console.log(raw_image_data)
+            
+                    document.getElementById('mydata').value = raw_image_data;
+                    document.getElementById('myform').submit();
+                } );
+            }
+            
+        </script>
+    </footer>
+</body>
+</html>

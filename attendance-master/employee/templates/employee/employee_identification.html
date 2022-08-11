@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<script src="{% static 'employee\js\webcam.js' %}"></script>
+<div class="row m-2">
+    <div class="col-4 m-1">
+        <div>
+            <div id="my_camera" style="width: 320px; height: 240px;"></div>
+            <div id="my_result"></div>
+
+            <form action="" enctype="multipart/form-data" id="myform" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="mydata" id="mydata">
+                <input type="button" value="Capture" id="submit_btn" class="btn btn-success btn-sm">
+            </form>
+        </div>
+    </div>
+
+
+    <div class="col-7 m-1 information_block">
+        <div class="form_data">
+            <form action="{% url 'employee:employee_identification' %}" method="post" id="form" enctype="multipart/form-data">
+                <div>
+                    <h3 class="d-flex justify-content-center">Verification Result</h3>
+                </div>
+
+                <div class="row m-1">
+                    <div class="col-5">
+                        <img src="" id="captured_image" class="rounded mx-auto d-block" width="100" height="100"
+                            alt="...">
+                        <h5 class="d-flex justify-content-center">Captured</h5>
+                    </div>
+                    <div class="col"></div>
+                    <div class="col-5">
+                        <img src="" alt="..." id="fetched_image" class="rounded mx-auto d-block" width="100"
+                            height="100">
+                        <h5 class="d-flex justify-content-center"></h5>
+                    </div>
+                </div>
+
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-2">
+                        <label for="emp_firstname">First Name:</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" name="emp_firstname" id="emp_firstname" class="form-control" value=""
+                            required>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="emp_lastname">Last Name:</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" name="emp_lastname" id="emp_lastname" class="form-control" value="" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <label for="log_type"> Log Type:</label>
+                    </div>
+                    <div class="col-4">
+                        <select name="log_type" id="log_type" class="form-control" required>    
+                            <option value="I">Check In</option>
+                            <option value="O">Check-Out</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col d-flex justify-content-center btn_log">
+                        <input class="btn btn-primary" id="btn_submit" type="submit" value="Submit">
+                        <!-- <input type="text" name="emp_identification" id="emp_identification" class="form-control"
+                            value="" required hidden> -->
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+            </tr>
+        </thead>
+        <tbody id="employees">
+            <tr class="matched_profile" id='p-unknown'>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken')
+    var emp_id;
+
+    $(document).ready(function () {
+        $('.table').hide();
+        $('.information_block').hide();
+
+        var photo;
+
+        Webcam.attach('#my_camera');
+        $("#submit_btn").click(function () {
+            var raw_image_data;
+            Webcam.snap(function (data_uri) {
+                $('#captured_image').attr("src", data_uri);
+                raw_image_data = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
+                photo = raw_image_data
+            });
+
+            $.post("{% url 'employee:employee_camera' %}",
+                {
+                    'mydata': raw_image_data,
+                    'csrfmiddlewaretoken': '{{csrf_token}}',
+                },
+                function (data, status) {
+                    console.log(data)
+                    console.log(status)
+                    if (data.data.length > 0) {
+                        $('.table').show();
+                        $('employees').empty();
+                        for (var i = 0; i < data.data.length; i++) {
+                            console.log("firstname", data.data[i].emp_firstname)
+                            console.log("last_name", data.data[i].emp_firstname)
+                            console.log("ID", data.data[i].index)
+                            console.log(data.data[i].emp_image_url)
+                            $('#employees').append("<tr class='matched_profile' id='" + 'p-' + data.data[i].index + "'><td>" + data.data[i].emp_firstname + "</td><td>" + data.data[i].emp_lastname + "</td></tr>")
+                            $('#fetched_image').attr("src", data.data[i].emp_image_url);
+                            // $('#fetched_image').attr("src", data.data[i].profile_image_url);
+                        }
+                    }
+                    else {
+                        console.log('Unknown face')
+                    }
+                });
+        });
+        $(document).on('click', '.matched_profile', function (e) {
+            $('.information_block').show();
+            $('.table').hide();
+            const id = this.id;
+            console.log(id)
+
+            $.post("{% url 'employee:employee_fetch' %}",
+                {
+                    'id': id,
+                    'csrfmiddlewaretoken': '{{csrf_token}}'
+                },
+
+                function (data, status) {
+                    console.log(data)
+                    console.log(data.status)
+                    if (data.status == 'found') {
+
+                        console.log(data.emp_firstname)
+                        console.log(data.emp_lastname)
+                        console.log(data.emp_id)
+                        emp_id = data.emp_id
+                        $('#emp_firstname').val(data.emp_firstname);
+                        $('#emp_firstname').attr('readonly', 'readonly');
+                        $('#emp_lastname').val(data.emp_lastname);
+                        $('#emp_lastname').attr('readonly', 'readonly');
+                        $('#emp_identification').val(data.emp_id);
+                        $('#emp_identification').attr('hidden', 'hidden');
+
+
+                    }
+                    else {
+                        console.log("You are not registered")
+                    }
+
+                });
+        });
+
+        $("#form").submit(function (e) {
+            e.preventDefault()
+            log_type = document.getElementById('log_type').value;
+            var result = null;
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'employee:employee_identification' %}",
+                headers: {
+                    "X-CSRFToken": csrftoken
+                },
+                data: {
+                    'emp_id':emp_id,
+                    'log_type': log_type
+                },
+                success: function (data) {
+                    result = data;
+                }
+            });
+            return result;
+        })
+    });
+</script>
+{% endblock %}

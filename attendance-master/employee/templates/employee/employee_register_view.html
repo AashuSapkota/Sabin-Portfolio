@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block title %}Employee Registration{% endblock %}
+{% block body %}
+<div class="col-7 m-1 information">
+    <div class="form_data">
+        <form method="post" id="form" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row">
+
+                <div class="col-2">
+                    <label for="emp_firstname"> First Name:</label>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" name="emp_firstname" id="emp_firstname" required>
+                </div>
+                
+                <div class="col-2">
+                    <label for="emp_middlename"> Middle Name:</label>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" name="emp_middlename" id="emp_middlename">
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-2">
+                    <label for="emp_lastname"> Last Name:</label>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" name="emp_lastname" id="emp_lastname" required>
+                </div>
+                
+                <div class="col-2">
+                    <label for="emp_gender"> Gender:</label>
+                </div>
+                <div class="col-4">
+                    <select name="emp_gender" id="emp_gender" class="form-control" required>
+                        <option value=""></option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-2">
+                    <label for="emp_DOB"> Date of Birth:</label>
+                </div>
+                <div class="col-4">
+                    <input type="date" class="form-control" name="emp_DOB" id="emp_DOB" required>
+                </div>
+                
+                <div class="col-2">
+                    <label for="emp_contact_number"> Contact Number:</label>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" name="emp_contact_number" id="emp_contact_number" required>
+                </div>
+
+            </div>
+            
+            <div class="row">
+
+                <div class="col-2">
+                    <label for="emp_mail"> Mail Address:</label>
+                </div>
+                <div class="col-4">
+                    <input type="mail" class="form-control" name="emp_mail" id="emp_mail" required>
+                </div>
+                
+                <div class="col-2">
+                    <label for="emp_address"> Address:</label>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" name="emp_address" id="emp_address" required>
+                </div>
+
+            </div>
+            
+            <div class="row">
+
+                <div class="col-2">
+                    <label for="emp_department"> Department:</label>
+                </div>
+                <div class="col-4">
+                    <select name="emp_department" id="emp_department" class="form-control" required>
+                        <option value=""></option>
+                        {% for i in departments %}
+                        <option value="{{i.pk}}">{{i.department_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-2">
+                    <label for="emp_position"> Position:</label>
+                </div>
+                <div class="col-4">
+                    <select name="emp_position" id="emp_position" class="form-control" required>
+                        <option value=""></option>
+                        {% for i in positions %}
+                        <option value="{{i.pk}}">{{i.position_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+            
+            <div class="row">
+
+                <div class="col-2">
+                    <label for="emp_level"> Level:</label>
+                </div>
+                <div class="col-4">
+                    <select name="emp_level" id="emp_level" class="form-control" required>
+                        <option value=""></option>
+                        {% for i in levels %}
+                        <option value="{{i.pk}}">{{i.level_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-2">
+                    <label for="emp_joining_date"> Joining Date:</label>
+                </div>
+                <div class="col-4">
+                    <input type="date" class="form-control" name="emp_joining_date" id="emp_joining_date" required>
+                </div>
+
+            </div>
+            
+            <div class="row">
+
+                <div class="col-2">
+                    <label for="emp_image"> Image:</label>
+                </div>
+                <div class="col-4">
+                    <input type="file" class="form-control" name="emp_image" id="emp_image" required>
+                </div>
+                
+                <div class="col-2">
+                    <label for="emp_document"> Document:</label>
+                </div>
+                <div class="col-4">
+                    <input type="file" class="form-control" name="emp_document" id="emp_document" required>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col d-flex justify-content-center">
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Register Department {% endblock %}
+
+{% block body %}
+<style>
+    form{
+        margin-top: 3%;
+    }
+    #registerButton{
+        margin-top: 5%;
+    }
+</style>
+
+<div>
+    <div class = "card card-login mx-auto mt-5">
+        <div class="card-header">Register New Department</div>
+
+    <div class="card-body">
+    
+        <form method = "POST" action = "{% url 'department:department_create' %}" id = "department_register_form">
+
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-3">
+                    <label for="department_code"> Department Code:</label>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="department_code" id="department_code">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <label for="department_name"> Department Name:</label>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="department_name" id="department_name">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <label for="department_description"> Department Description:</label>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="department_description" id="department_description">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <input class="btn btn-primary" type="submit" value="Submit">
+    
+                </div>
+            </div>
+        </form>
+</div>
+{% endblock %}

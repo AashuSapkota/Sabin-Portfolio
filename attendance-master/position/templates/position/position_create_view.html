@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Register Position {% endblock %}
+
+{% block body %}
+<style>
+    form{
+        margin-top: 3%;
+    }
+    #registerButton{
+        margin-top: 5%;
+    }
+</style>
+
+<div>
+    <div class = "card card-login mx-auto mt-5">
+        <div class="card-header">Register New Position</div>
+
+    <div class="card-body">
+    
+        <form method = "POST" action = "{% url 'position:position_create' %}" id = "position_register_form">
+
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-3">
+                    <label for="position_name"> Position Name:</label>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="position_name" id="position_name">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <label for="position_description"> Position Description:</label>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="position_description" id="position_description">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <input class="btn btn-primary" type="submit" value="Submit">
+    
+                </div>
+            </div>
+        </form>
+</div>
+{% endblock %}

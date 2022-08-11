@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Employee Details{% endblock %}
+{% block body %}
+{% comment %}
+<div>
+    <h3>Employee Detail</h3>
+    <div class="Container">
+        <div class="row">
+            <div class="col-sm">Name</div>
+            <div class="col-sm">{{object.emp_firstname}} {{object.emp_lastname}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Address</div>
+            <div class="col-sm">{{object.emp_address}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Contact Number</div>
+            <div class="col-sm">{{object.emp_contact_number}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Mail Address</div>
+            <div class="col-sm">{{object.emp_mail}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Department</div>
+            <div class="col-sm">{{object.emp_department}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Position</div>
+            <div class="col-sm">{{object.emp_position}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Level</div>
+            <div class="col-sm">{{object.emp_level}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Registered Date</div>
+            <div class="col-sm">{{object.emp_registered_date}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Joining Date</div>
+            <div class="col-sm">{{object.emp_joining_date}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Date of Birth</div>
+            <div class="col-sm">{{object.emp_DOB}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Gender</div>
+            <div class="col-sm">{{object.gender}}</div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm">Profile Image</div>
+            <div class="col-sm"><img src="{{object.emp_image.url}}" width="100" height="100" class="img-thumbnail" alt="..."></div>
+        </div>
+    </div>
+</div>
+{% endcomment %}
+
+<section class="services">
+    <div class="container">
+        <div class="services-title">
+            <div class="title">
+                <h2>Employee Detail</h2>
+                <br />
+            </div>
+        </div>
+        <div class="services-box">
+            <div class="box">
+                <div class="ser-box">
+                    <div class="icon">
+                        <img src="{{object.emp_image.url}}" width="300" height="300" alt="...">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Name: </div>
+                        <div class="col-sm"><h4>{{object.emp_firstname}} {{object.emp_lastname}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Gender: </div>
+                        <div class="col-sm"><h4>{{object.emp_gender}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Date Of Birth: </div>
+                        <div class="col-sm"><h4>{{object.emp_DOB}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Contact Number: </div>
+                        <div class="col-sm"><h4>{{object.emp_contact_number}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Mail Address: </div>
+                        <div class="col-sm"><h4>{{object.emp_mail}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Address: </div>
+                        <div class="col-sm"><h4>{{object.emp_address}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Department: </div>
+                        <div class="col-sm"><h4>{{object.emp_department}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Position: </div>
+                        <div class="col-sm"><h4>{{object.emp_position}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Level: </div>
+                        <div class="col-sm"><h4>{{object.emp_level}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Registered Date: </div>
+                        <div class="col-sm"><h4>{{object.emp_registered_date}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Joining Date: </div>
+                        <div class="col-sm"><h4>{{object.emp_joining_date}}</h4></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">Document: </div>
+                        <div class="col-sm"><img src="{{object.emp_document.url}}" width="100" height="100" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
