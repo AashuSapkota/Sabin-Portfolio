@@ -39,4 +39,4 @@ are developed. This application is yet to be completed.
   This is Django based application which includes the implemantation of Elasticsearch, RabbitMQ and Logstash. Logs from an existing database are transfered to the elasticsearch with the help of logstash. And for new data, api is developed to send data to RabbitMQ server (thus made asynchronous) and then as RabbitMQ gets data it pushes the data to elasticsearch database.
  
 ### Data Extraction Application
-    This is django rest framework based application which implements azure cognitive services. With the help of azure cognitive services data is extracted from ID cards and then supplied as response to the request.
+   This is django rest framework based application which implements azure cognitive services. With the help of azure cognitive services data is extracted from ID cards and then supplied as response to the request.
