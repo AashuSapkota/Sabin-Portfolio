@@ -3,6 +3,14 @@ Details of personal and professional projects
 
 ## Personal Projects
 
+### Website
+* Code in branch: cicc_website
+Developed a simple website (for civil engineering consultant) based on Django with use of Wagtail CMS. 
+
+### Logistic Management System
+* Code in branch: logistics
+A web application based on Django where a vendor can place his/her parcel to get it delivered and the admin will assign rider to deliver the parcel and rider gets it delivered to the customer. 
+
 ### Attendance management System
 * Code in branch: attendance
 
