@@ -22,17 +22,20 @@ The application uses face-recognition library for the identification of the empl
 
 ### Video Broadcast Platform
 * Code in branch broadcast
+
 This is and web application based on Django. Here the admin uploads videos on various channels.
 Users are able to subscribe to the channel and watch videos of subscribed channel.
 
 
 ### Machine Learning Practice
 * Code in branch machinelearning
+
 Here is the implementation basic machine learning to detect spammail and fake news.
 
 
 ### Restaurant Ordering System
 * Code in branch restautant
+
 This is backend api for restaurant ordering management system based on Django Rest Framework. APIs required for restaurant ordering system such as
       - item creation, update, list, delete
       - table creation, update, list, delete
